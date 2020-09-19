@@ -12,17 +12,17 @@ os: linux
 dist: bionic
 
 env:
-  - EMACS_CI=emacs-24-3
-  - EMACS_CI=emacs-24-4
-  - EMACS_CI=emacs-24-5
-  - EMACS_CI=emacs-25-1
-  - EMACS_CI=emacs-25-2
-  - EMACS_CI=emacs-25-3
-  - EMACS_CI=emacs-26-1
-  - EMACS_CI=emacs-26-2
-  - EMACS_CI=emacs-26-3
-  - EMACS_CI=emacs-27-1
-  - EMACS_CI=emacs-snapshot
+  - EMACS_CI=emacs-24-3 FOO=bar
+  - EMACS_CI=emacs-24-4 FOO=bar
+  - EMACS_CI=emacs-24-5 FOO=bar
+  - EMACS_CI=emacs-25-1 FOO=bar
+  - EMACS_CI=emacs-25-2 FOO=bar
+  - EMACS_CI=emacs-25-3 FOO=bar
+  - EMACS_CI=emacs-26-1 FOO=bar
+  - EMACS_CI=emacs-26-2 FOO=bar
+  - EMACS_CI=emacs-26-3 FOO=bar
+  - EMACS_CI=emacs-27-1 FOO=bar
+  - EMACS_CI=emacs-snapshot FOO=bar
 
 before_install:
   - sudo mkdir -p /etc/nix
@@ -41,11 +41,15 @@ install:
   - bash <(curl https://raw.githubusercontent.com/purcell/nix-emacs-ci/master/travis-install)
   - emacs --version
   - export PATH=$TRAVIS_BUILD_DIR/bin:$PATH
-  - cask
+  - cask install
+  - cask upgrade
   - make start-server
 
 script:
   - export PATH=$TRAVIS_BUILD_DIR/bin:$PATH
+  - cask --version
+  - emacs --version
+  # - make clean
   - make test
 
 after_failure:
